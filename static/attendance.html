@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <title>Attendance</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+        <div class="container">
+                
+                        <h2>Attendance</h2>
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+                                data-target="#myModal">Add</button>
+
+                                <div class="container">
+                                        <h2>Employee Table</h2>
+                                        <p></p>                                                                                      
+                                        <div class="table-responsive">          
+                                        <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Name</th>
+                                              <th>Email</th>
+                                              <th>Mobile</th>
+                                              <th>Department</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                        </div>
+                                      </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog">
+                                        <form id="att-form">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-header">
+                                                        <button type="button" class="close"
+                                                                data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Attendance</h4>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                        <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                        <label for="name">Name</label>
+                                                                        <input type="text" class="form-control"
+                                                                                id="name" placeholder="Enter your name"
+                                                                                required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                        <label for="email">Email</label>
+                                                                        <input type="email" class="form-control"
+                                                                                id="email"
+                                                                                placeholder="Enter your email" required>
+                                                                </div>
+                                                        </div>
+                                                        
+                                                        <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                        <label for="mobile">Mobile</label>
+                                                                        <input type="number" class="form-control"
+                                                                                id="mobile"
+                                                                                placeholder="Enter your mobile"
+                                                                                required>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                        <label>Department</label>
+                                                                        <select class="form-control form-white" id="department"
+                                                                                data-placeholder="department..."
+                                                                                name="category-color">
+                                                                                <option value="">None</option>
+                                                                                <option value="d">Software Development
+                                                                                </option>
+                                                                                <option value="t">Software Testing
+                                                                                </option>
+                                                                                <option value="hr">Human Resources
+                                                                                </option>
+                                                                                <option value="n">Networking</option>
+                                                                        </select>
+                                                                </div>
+                                                        </div>
+                                                        
+                                                        <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                        <label>Status</label>
+                                                                        <select class="form-control form-white" id="status"
+                                                                                data-placeholder="status..."
+                                                                                name="category-color">
+                                                                                <option value="">None</option>
+                                                                                <option value="a">Active</option>
+                                                                                <option value="i">In Active</option>
+
+                                                                        </select>
+                                                                </div>
+                                                        </div>
+                                                </div>
+
+                                
+
+                                                <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Submit</button>
+
+                                                </div>
+                                        </div>
+                                        </form>
+                                </div>
+                        </div>
+                
+
+        </div>
+        <script>
+                 const form = document.getElementById('att-form')
+                 form.addEventListener('button',attendanceRegister)
+
+            //send data as Json(COMMON)
+
+            async function attendanceRegister(event){
+                 event.preventDefault()
+                 const name =document.getElementById('name').value
+                 const email =document.getElementById('email').value
+                 const mobile =document.getElementById('mobile').value
+                 const department =document.getElementById('department').value
+                 const status =document.getElementById('status').value
+
+               const result =  await fetch('/api/employees',{
+
+                    method: 'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        mobile,
+                        department,
+                        status
+                    })
+                }).then((res)=> res.json())
+
+                if(result.status === 'ok'){
+                    ///everything went fine
+                    alert('Employee Addentance Added Successfully')
+                    window.location="attendance.html";
+
+            
+                }else{
+                    alert(result.error)
+                }
+            }
+        </script>
+
+</body>
+
+</html>
